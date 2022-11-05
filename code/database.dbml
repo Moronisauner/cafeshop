@@ -1,0 +1,54 @@
+Table users {
+  id integer [primary key, increment]
+  username text [unique, not null]
+}
+
+Table plans {
+    id integer [primary key, increment]
+    name text
+    month_price decimal
+    description text
+}
+
+Table signatures {
+    id integer [primary key, increment]
+    user_id integer
+    plan_id integer
+    start_date date [default: `CURRENT_DATE`]
+    end_date date [default: `CURRENT_DATE + interval '1 year'`]
+    status text [default: "active"]
+}
+
+Table products {
+  id integer [primary key, increment]
+  name text
+  price decimal
+}
+
+Table orders {
+  id integer [primary key, increment]
+  user_id int
+  invoice_id int
+  product_id int
+  amount int [not null]
+  created_at timestamp [default: `now()`]
+}
+
+Table invoices {
+  id integer [primary key, increment]
+  price decimal
+  signature_id int
+  user_id int
+  paid boolean [default: false]
+  due_date date
+}
+
+Ref: signatures.user_id > users.id
+Ref: signatures.plan_id > plans.id
+
+Ref: orders.user_id > users.id
+Ref: orders.product_id > products.id
+Ref: orders.invoice_id > invoices.id
+
+Ref: invoices.signature_id > signatures.id
+Ref: invoices.user_id > users.id

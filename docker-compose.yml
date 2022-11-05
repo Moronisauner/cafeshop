@@ -1,0 +1,12 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:13.1-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ./code:/etc/code
+    environment:
+      POSTGRES_DB: cafeshop
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
